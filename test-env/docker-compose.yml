@@ -4,7 +4,7 @@ services:
     depends_on:
       - kafka0
     container_name: message-server
-    image: message-server:latest
+    image: dmytromalohlovets/message-server:latest
     ports:
       - "0.0.0.0:80:7001"
     networks:
