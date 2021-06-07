@@ -1,0 +1,15 @@
+{
+  "namespace": "io.confluent.demo",
+  "type": "record",
+  "name": "KafkaMessages",
+  "fields": [
+    {
+      "name": "id",
+      "type": "long"
+    },
+    {
+      "name": "message",
+      "type": "string"
+    }
+  ]
+}

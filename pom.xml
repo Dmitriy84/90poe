@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.3.3.RELEASE</version>
+		<relativePath/>
+	</parent>
+	<groupId>com.poe.kafka.respapi</groupId>
+	<artifactId>springbootapp</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>springbootapp</name>
+	<description>A demo project using Spring Boot with Kafka Stream</description>
+	<repositories>
+		<repository>
+			<id>confluent</id>
+			<name>confluent</name>
+			<url>https://packages.confluent.io/maven/</url>
+		</repository>
+	</repositories>
+	<properties>
+		<java.version>14</java.version>
+		<avro.version>1.10.0</avro.version>
+		<kafka.version>2.6.0</kafka.version>
+		<openapi.version>1.4.3</openapi.version>
+	</properties>
+	<dependencies>
+		<!-- https://mvnrepository.com/artifact/org.projectlombok/lombok -->
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>1.18.20</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/javax.persistence/javax.persistence-api -->
+		<dependency>
+			<groupId>javax.persistence</groupId>
+			<artifactId>javax.persistence-api</artifactId>
+			<version>2.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/com.h2database/h2 -->
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.200</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-streams</artifactId>
+			<version>${kafka.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.kafka</groupId>
+			<artifactId>kafka-clients</artifactId>
+			<version>${kafka.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>io.confluent</groupId>
+			<artifactId>kafka-streams-avro-serde</artifactId>
+			<version>5.5.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+			<exclusions>
+				<exclusion>
+					<groupId>org.junit.vintage</groupId>
+					<artifactId>junit-vintage-engine</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springdoc</groupId>
+			<artifactId>springdoc-openapi-ui</artifactId>
+			<version>${openapi.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.springframework.kafka</groupId>
+			<artifactId>spring-kafka</artifactId>
+			<version>2.5.4.RELEASE</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro</artifactId>
+			<version>${avro.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro-maven-plugin</artifactId>
+			<version>${avro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro-compiler</artifactId>
+			<version>${avro.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.apache.avro</groupId>
+			<artifactId>avro-ipc</artifactId>
+			<version>${avro.version}</version>
+		</dependency>
+
+<!--		&lt;!&ndash; https://mvnrepository.com/artifact/org.apache.maven.plugins/maven-jar-plugin &ndash;&gt;-->
+<!--		<dependency>-->
+<!--			<groupId>org.apache.maven.plugins</groupId>-->
+<!--			<artifactId>maven-jar-plugin</artifactId>-->
+<!--			<version>3.2.0</version>-->
+<!--		</dependency>-->
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>org.apache.avro</groupId>
+				<artifactId>avro-maven-plugin</artifactId>
+				<version>${avro.version}</version>
+				<executions>
+					<execution>
+						<id>schemas</id>
+						<phase>generate-sources</phase>
+						<goals>
+							<goal>schema</goal>
+							<goal>protocol</goal>
+							<goal>idl-protocol</goal>
+						</goals>
+						<configuration>
+							<sourceDirectory>${project.basedir}/src/main/avro/</sourceDirectory>
+							<outputDirectory>${project.basedir}/src/main/java/</outputDirectory>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+			<plugin>
+				<groupId>org.springframework.boot</groupId>
+				<artifactId>spring-boot-maven-plugin</artifactId>
+				<version>2.5.0</version>
+				<executions>
+					<execution>
+						<goals>
+							<goal>repackage</goal>
+						</goals>
+						<configuration>
+							<classifier>spring-boot</classifier>
+							<mainClass>
+								com.poe.kafka.respapi.springbootapp.SpringbootappApplication
+							</mainClass>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+<!--			<plugin>-->
+<!--				&lt;!&ndash; Build an executable JAR &ndash;&gt;-->
+<!--				<groupId>org.apache.maven.plugins</groupId>-->
+<!--				<artifactId>maven-jar-plugin</artifactId>-->
+<!--				<version>3.2.0</version>-->
+<!--				<configuration>-->
+<!--					<archive>-->
+<!--						<manifest>-->
+<!--							<addClasspath>true</addClasspath>-->
+<!--							<classpathPrefix>lib/</classpathPrefix>-->
+<!--							<mainClass>com.poe.kafka.respapi.springbootapp.SpringbootappApplication</mainClass>-->
+<!--						</manifest>-->
+<!--					</archive>-->
+<!--				</configuration>-->
+<!--			</plugin>-->
+		</plugins>
+	</build>
+</project>
